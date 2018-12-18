@@ -27,4 +27,9 @@ public class CategoryController {
     public Map<String,Object> deleteCategory(@PathVariable String id){
         return categoryService.deleteCategory(id);
     }
+
+    @GetMapping("/list")
+    public Map<String,Object> getCategoryList(){
+        return categoryService.getCategoryList();
+    }
 }

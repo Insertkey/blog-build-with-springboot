@@ -15,8 +15,8 @@ public class FileController {
     FileService fileService;
 
     @PostMapping("upload")
-    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file){
-        return fileService.handelUploadFile(file);
+    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam Map<String,Object> stringObjectMap){
+        return fileService.handelUploadFile(file,stringObjectMap);
     }
 
 

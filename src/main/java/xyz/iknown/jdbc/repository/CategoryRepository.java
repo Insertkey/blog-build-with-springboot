@@ -11,4 +11,8 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
     @Modifying(clearAutomatically = true)
     @Query("update Category set categoryName =?1 where id=?2")
     void updateCategoryNameById(String categoryName,Integer id);
+
+    Category findByCategoryName(String categoryName);
+
+    boolean existsByCategoryName(String categoryName);
 }

@@ -1,5 +1,7 @@
 package xyz.iknown.jdbc.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,10 +60,12 @@ public class File {
                 '}';
     }
 
+    @JsonBackReference
     public Category getCategory() {
         return category;
     }
 
+    @JsonBackReference
     public void setCategory(Category category) {
         this.category = category;
     }

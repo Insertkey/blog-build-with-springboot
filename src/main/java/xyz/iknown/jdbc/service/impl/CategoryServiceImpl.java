@@ -53,4 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
             return ResponseUtil.faildResponse("修改分类失败，请稍后再试");
         }
     }
+
+    @Override
+    public Map<String, Object> getCategoryList() {
+        return ResponseUtil.successResponse(categoryRepository.findAll());
+    }
 }
