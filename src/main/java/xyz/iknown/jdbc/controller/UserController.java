@@ -23,4 +23,9 @@ public class UserController {
         return userService.changePassword(stringObjectMap);
     }
 
+    @PostMapping("/exist")
+    public Map<String,Object> isExist(@RequestBody Map<String,Object> stringObjectMap){
+        return userService.isUserExist(stringObjectMap);
+    }
+
 }

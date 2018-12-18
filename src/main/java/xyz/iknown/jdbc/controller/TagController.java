@@ -22,4 +22,14 @@ public class TagController {
     public Map<String,Object> updateTag(@RequestBody Map<String,Object> stringObjectMap){
         return tagService.updateTag(stringObjectMap);
     }
+
+    @GetMapping("all")
+    public Map<String,Object> findAllTags(){
+        return tagService.findAllTags();
+    }
+
+    @DeleteMapping("/{id}")
+    public Map<String,Object> deleteTag(@PathVariable String id){
+        return tagService.deleteTag(id);
+    }
 }

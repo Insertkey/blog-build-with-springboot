@@ -5,31 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Tag {
+public class Category {
     @Id
     @GeneratedValue
     private Integer id;
 
     @Column
-    private String tagName;
+    private String categoryName;
 
     @Column
-    private String color;
+    private long lastEditTime;
 
-    @ManyToMany(mappedBy = "tags",fetch = FetchType.EAGER)
+    @Column
+    @OneToMany(mappedBy = "category")
     private Set<File> files=new HashSet<>();
-
-    public Tag(){
-
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
 
     public Integer getId() {
         return id;
@@ -39,12 +28,20 @@ public class Tag {
         this.id = id;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public long getLastEditTime() {
+        return lastEditTime;
+    }
+
+    public void setLastEditTime(long lastEditTime) {
+        this.lastEditTime = lastEditTime;
     }
 
     public Set<File> getFiles() {
@@ -59,8 +56,9 @@ public class Tag {
     public String toString() {
         return "{" +
                 "id:" + id +
-                ", tagName:'" + tagName + '\'' +
-                ", color:'" + color + '\'' +
+                ", categoryName:'" + categoryName + '\'' +
+                ", lastEditTime:" + lastEditTime +
+                ", files:" + files +
                 '}';
     }
 }

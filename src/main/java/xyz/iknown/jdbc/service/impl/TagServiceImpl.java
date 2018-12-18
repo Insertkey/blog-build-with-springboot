@@ -15,30 +15,46 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     @Override
-    public Map<String, Object> addTag(Map<String,Object> stringObjectMap) {
-        Tag tag= new Tag();
-        tag.setTag((String) stringObjectMap.get("tag"));
+    public Map<String, Object> addTag(Map<String, Object> stringObjectMap) {
+        Tag tag = new Tag();
+        tag.setTagName((String) stringObjectMap.get("tagName"));
+        tag.setColor((String) stringObjectMap.get("color"));
         tagRepository.save(tag);
         return ResponseUtil.successResponseWithoutData();
     }
 
     @Override
-    public Map<String, Object> updateTag(Map<String,Object> stringObjectMap) {
-        Integer id=(Integer) stringObjectMap.get("id");
-        Tag tag=findATag(id);
-        if (tag==null){
+    public Map<String, Object> updateTag(Map<String, Object> stringObjectMap) {
+        Integer id = (Integer) stringObjectMap.get("id");
+        Tag tag = findATag(id);
+        if (tag == null) {
             return ResponseUtil.faildResponse("该标签不存在");
-        }else {
-            String newTag= (String) stringObjectMap.get("newTag");
-            tagRepository.updateTagById(newTag,id);
+        } else {
+            String newTag = (String) stringObjectMap.get("newTag");
+            tagRepository.updateTagById(newTag, id);
             return ResponseUtil.successResponseWithoutData();
         }
     }
 
-    private Tag findATag(int id){
-        if(tagRepository.existsById(id)){
-            return tagRepository.findById(id);
+    @Override
+    public Map<String, Object> findAllTags() {
+        return ResponseUtil.successResponse(tagRepository.findAll());
+    }
+
+    @Override
+    public Map<String, Object> deleteTag(String id) {
+        try {
+            tagRepository.deleteById(Integer.parseInt(id));
+            return ResponseUtil.successResponseWithoutData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.faildResponse("删除失败，请稍后再试");
         }
-        else return null;
+    }
+
+    private Tag findATag(int id) {
+        if (tagRepository.existsById(id)) {
+            return tagRepository.findById(id);
+        } else return null;
     }
 }

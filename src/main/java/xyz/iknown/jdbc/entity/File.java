@@ -32,23 +32,38 @@ public class File {
     private long lastEditTime;
 
     /**
+     * 文章分类
+     */
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    /**
      * 文章标签
      */
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(joinColumns=@JoinColumn(name="file_id"),inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags=new HashSet<>();
 
-
     @Override
     public String toString() {
         return "{" +
-                "id=" + id +
-                ", articleName='" + articleName + '\'' +
-                ", fullPath='" + fullPath + '\'' +
-                ", createTime=" + createTime +
-                ", lastEditTime=" + lastEditTime +
-                ", tags=" + tags +
+                "id:" + id +
+                ", articleName:'" + articleName + '\'' +
+                ", fullPath:'" + fullPath + '\'' +
+                ", createTime:" + createTime +
+                ", lastEditTime:" + lastEditTime +
+                ", category:" + category +
+                ", tags:" + tags +
                 '}';
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public long getId() {

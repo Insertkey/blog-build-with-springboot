@@ -15,6 +15,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     public Map<String,Object> handelLogin(Map<String,Object> loggingUser){
         User user= findAUser((String) loggingUser.get("userName"));
         if(user==null){
@@ -43,6 +44,15 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+    @Override
+    public Map<String, Object> isUserExist(Map<String, Object> stringObjectMap) {
+        User user =findAUser((String) stringObjectMap.get("userName"));
+        if(user==null){
+            return ResponseUtil.faildResponse("该用户不存在");
+        }else return ResponseUtil.successResponseWithoutData();
+    }
+
 
     private User findAUser(String name) {
         if(userRepository.existsByName(name)){
