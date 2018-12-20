@@ -18,4 +18,11 @@ public class FileUtil {
         out.flush();
         out.close();
     }
+
+    public static void deleteFile(String fullPath){
+        File targetFile=new File(fullPath);
+        if(targetFile.exists()&&targetFile.isFile()){
+            targetFile.delete();
+        }
+    }
 }

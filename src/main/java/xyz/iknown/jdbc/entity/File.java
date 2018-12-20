@@ -10,7 +10,7 @@ import java.util.Set;
 public class File {
     @Id
     @GeneratedValue
-    private long id;
+    private Integer id;
 
     @Column
     private String articleName;
@@ -34,6 +34,12 @@ public class File {
     private long lastEditTime;
 
     /**
+     * 文章简介
+     */
+    @Column
+    private String shortIntroduction;
+
+    /**
      * 文章分类
      */
     @ManyToOne
@@ -55,26 +61,33 @@ public class File {
                 ", fullPath:'" + fullPath + '\'' +
                 ", createTime:" + createTime +
                 ", lastEditTime:" + lastEditTime +
+                ", shortIntroduction:'" + shortIntroduction + '\'' +
                 ", category:" + category +
                 ", tags:" + tags +
                 '}';
     }
 
-    @JsonBackReference
     public Category getCategory() {
         return category;
     }
 
-    @JsonBackReference
     public void setCategory(Category category) {
         this.category = category;
     }
 
-    public long getId() {
+    public String getShortIntroduction() {
+        return shortIntroduction;
+    }
+
+    public void setShortIntroduction(String shortIntroduction) {
+        this.shortIntroduction = shortIntroduction;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

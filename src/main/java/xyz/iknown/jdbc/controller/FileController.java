@@ -19,5 +19,14 @@ public class FileController {
         return fileService.handelUploadFile(file,stringObjectMap);
     }
 
+    @GetMapping("/list")
+    public Map<String,Object> getArticleList(@RequestParam int page,@RequestParam int size){
+        return fileService.getArticleList(page,size);
+    }
+
+    @DeleteMapping("/{id}")
+    public Map<String,Object> deleteArticle(@PathVariable Integer id){
+        return fileService.deleteFile(id);
+    }
 
 }

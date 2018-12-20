@@ -1,5 +1,7 @@
 package xyz.iknown.jdbc.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,7 @@ public class Category {
     private long lastEditTime;
 
     @Column
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
     private Set<File> files=new HashSet<>();
 
     public Integer getId() {
@@ -44,10 +46,12 @@ public class Category {
         this.lastEditTime = lastEditTime;
     }
 
+    @JsonBackReference
     public Set<File> getFiles() {
         return files;
     }
 
+    @JsonBackReference
     public void setFiles(Set<File> files) {
         this.files = files;
     }
@@ -58,7 +62,6 @@ public class Category {
                 "id:" + id +
                 ", categoryName:'" + categoryName + '\'' +
                 ", lastEditTime:" + lastEditTime +
-                ", files:" + files +
                 '}';
     }
 }

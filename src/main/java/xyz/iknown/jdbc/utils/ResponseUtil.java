@@ -28,4 +28,13 @@ public class ResponseUtil {
         modelMap.put("errMsg","");
         return modelMap;
     }
+
+    public static Map<String,Object> paggingResponse(List list,Map<String,Object> map){
+        Map<String,Object> modelMap=new HashMap<>();
+        modelMap.put("success",true);
+        modelMap.put("errMsg","");
+        modelMap.put("data",list);
+        modelMap.put("option",map);
+        return modelMap;
+    }
 }
