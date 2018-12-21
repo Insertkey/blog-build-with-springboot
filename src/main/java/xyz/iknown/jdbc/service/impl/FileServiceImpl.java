@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,15 +108,54 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    /**
+     * 只有分页，不带排序
+     * @param page 从零开始
+     * @param size
+     * @return
+     */
     @Override
     public Map<String, Object> getArticleList(int page,int size) {
-        Pageable pageable=new PageRequest(page-1,size);
+        Pageable pageable= PageRequest.of(page-1,size);
         Page p=fileRepository.findAll(pageable);
         List<File> fileList = p.getContent();
         Map<String,Object> map=new HashMap<>();
         map.put("total",p.getTotalElements());
         map.put("page",p.getTotalPages());
         return ResponseUtil.paggingResponse(fileList,map);
+    }
+
+    /**
+     * 有分页和排序
+     * @param size   每页数量
+     * @param page  页数
+     * @param sortKey 排序字段
+     * @param sortValue 排序方式
+     * @return
+     */
+    @Override
+    public Map<String, Object> getArticleList(int page, int size, String sortKey, String sortValue) {
+        if(sortKey.equals("undefined")||sortKey.equals("null")){
+            return getArticleList(page,size);
+        }else {
+            if(sortValue.equals("descend")){
+                Sort sort=new Sort(Sort.Direction.DESC,sortKey);
+                Page p=fileRepository.findAll(PageRequest.of(page-1,size,sort));
+                List<File> fileList = p.getContent();
+                Map<String,Object> map=new HashMap<>();
+                map.put("total",p.getTotalElements());
+                map.put("page",p.getTotalPages());
+                return ResponseUtil.paggingResponse(fileList,map);
+            }else {
+                Sort sort=new Sort(Sort.Direction.ASC,sortKey);
+                Page p=fileRepository.findAll(PageRequest.of(page-1,size,sort));
+                List<File> fileList = p.getContent();
+                Map<String,Object> map=new HashMap<>();
+                map.put("total",p.getTotalElements());
+                map.put("page",p.getTotalPages());
+                return ResponseUtil.paggingResponse(fileList,map);
+            }
+        }
     }
 
     private void deleteFileFormDisk(Integer id) {

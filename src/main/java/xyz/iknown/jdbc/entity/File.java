@@ -53,20 +53,6 @@ public class File {
     @JoinTable(joinColumns=@JoinColumn(name="file_id"),inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags=new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "{" +
-                "id:" + id +
-                ", articleName:'" + articleName + '\'' +
-                ", fullPath:'" + fullPath + '\'' +
-                ", createTime:" + createTime +
-                ", lastEditTime:" + lastEditTime +
-                ", shortIntroduction:'" + shortIntroduction + '\'' +
-                ", category:" + category +
-                ", tags:" + tags +
-                '}';
-    }
-
     public Category getCategory() {
         return category;
     }

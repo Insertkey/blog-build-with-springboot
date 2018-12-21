@@ -55,13 +55,4 @@ public class Category {
     public void setFiles(Set<File> files) {
         this.files = files;
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "id:" + id +
-                ", categoryName:'" + categoryName + '\'' +
-                ", lastEditTime:" + lastEditTime +
-                '}';
-    }
 }

@@ -54,13 +54,4 @@ public class Tag {
     public void setFiles(Set<File> files) {
         this.files = files;
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "id:" + id +
-                ", tagName:'" + tagName + '\'' +
-                ", color:'" + color + '\'' +
-                '}';
-    }
 }

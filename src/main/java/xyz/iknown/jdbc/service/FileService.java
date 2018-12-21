@@ -12,4 +12,6 @@ public interface FileService {
     Map<String,Object> deleteFile(Integer id);
 
     Map<String,Object> getArticleList(int size,int page);
+
+    Map<String,Object> getArticleList(int size,int page,String sortKey,String sortValue);
 }

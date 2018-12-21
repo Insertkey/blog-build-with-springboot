@@ -15,17 +15,17 @@ public class FileController {
     FileService fileService;
 
     @PostMapping("upload")
-    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam Map<String,Object> stringObjectMap){
-        return fileService.handelUploadFile(file,stringObjectMap);
+    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Map<String, Object> stringObjectMap) {
+        return fileService.handelUploadFile(file, stringObjectMap);
     }
 
     @GetMapping("/list")
-    public Map<String,Object> getArticleList(@RequestParam int page,@RequestParam int size){
-        return fileService.getArticleList(page,size);
+    public Map<String, Object> getArticleList(@RequestParam int page, @RequestParam int size, @RequestParam(required = false) String sortKey, @RequestParam(required = false) String sortValue) {
+        return fileService.getArticleList(page, size,sortKey,sortValue);
     }
 
     @DeleteMapping("/{id}")
-    public Map<String,Object> deleteArticle(@PathVariable Integer id){
+    public Map<String, Object> deleteArticle(@PathVariable Integer id) {
         return fileService.deleteFile(id);
     }
 
