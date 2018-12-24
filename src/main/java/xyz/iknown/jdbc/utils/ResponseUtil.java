@@ -37,4 +37,12 @@ public class ResponseUtil {
         modelMap.put("option",map);
         return modelMap;
     }
+
+    public static Map<String,Object> successResponseWithJson(Map<String,Object> map){
+        Map<String,Object> modelMap=new HashMap<>();
+        modelMap.put("success",true);
+        modelMap.put("errMsg","");
+        modelMap.put("data",map);
+        return modelMap;
+    }
 }

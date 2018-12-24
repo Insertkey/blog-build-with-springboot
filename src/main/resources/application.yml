@@ -9,5 +9,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+  http:
+    encoding:
+      charset: UTF-8
+
 server:
   port: 8082
+  tomcat:
+    uri-encoding: UTF-8

@@ -158,6 +158,20 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    @Override
+    public Map<String, Object> getArticleName(Integer id) {
+        File file=fileRepository.getOne(id);
+        Map<String,Object> map=new HashMap<>();
+        map.put("articleName",file.getArticleName());
+        return ResponseUtil.successResponseWithJson(map);
+    }
+
+    @Override
+    public Map<String, Object> getArticleListWithCategory(Integer categoryId) {
+        List<File> fileList=fileRepository.findByCategory_Id(categoryId);
+        return ResponseUtil.successResponse(fileList);
+    }
+
     private void deleteFileFormDisk(Integer id) {
         File file = fileRepository.getOne(id);
         String fullPath = file.getFullPath();

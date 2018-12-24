@@ -24,6 +24,16 @@ public class FileController {
         return fileService.getArticleList(page, size,sortKey,sortValue);
     }
 
+    @GetMapping("list/{id}")
+    public Map<String,Object> getArticleListWithCategory(@PathVariable Integer id){
+        return fileService.getArticleListWithCategory(id);
+    }
+
+    @GetMapping("/{id}")
+    public Map<String, Object> getArticleName(@PathVariable Integer id) {
+        return fileService.getArticleName(id);
+    }
+
     @DeleteMapping("/{id}")
     public Map<String, Object> deleteArticle(@PathVariable Integer id) {
         return fileService.deleteFile(id);

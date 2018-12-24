@@ -1,7 +1,5 @@
 package xyz.iknown.jdbc.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;

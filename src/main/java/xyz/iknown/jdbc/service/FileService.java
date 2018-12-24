@@ -14,4 +14,8 @@ public interface FileService {
     Map<String,Object> getArticleList(int size,int page);
 
     Map<String,Object> getArticleList(int size,int page,String sortKey,String sortValue);
+
+    Map<String, Object> getArticleName(Integer id);
+
+    Map<String,Object> getArticleListWithCategory(Integer categoryId);
 }

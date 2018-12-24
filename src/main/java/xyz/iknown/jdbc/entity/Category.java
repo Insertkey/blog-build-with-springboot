@@ -1,6 +1,6 @@
 package xyz.iknown.jdbc.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ public class Category {
     private long lastEditTime;
 
     @Column
+    @JsonIgnoreProperties(value = { "category" })
     @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
     private Set<File> files=new HashSet<>();
 
@@ -46,12 +47,10 @@ public class Category {
         this.lastEditTime = lastEditTime;
     }
 
-    @JsonBackReference
     public Set<File> getFiles() {
         return files;
     }
 
-    @JsonBackReference
     public void setFiles(Set<File> files) {
         this.files = files;
     }
