@@ -20,7 +20,7 @@ public class Category {
 
     @Column
     @JsonIgnoreProperties(value = { "category" })
-    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<File> files=new HashSet<>();
 
     public Integer getId() {

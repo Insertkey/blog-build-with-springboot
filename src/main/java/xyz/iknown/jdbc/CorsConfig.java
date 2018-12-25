@@ -20,7 +20,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/markdownFile/**")
-                .addResourceLocations("classpath:/static/markdownFile/")
+                .addResourceLocations("file:C:/static/markdownFile/")
                 .setCachePeriod(31556926);
     }
 }

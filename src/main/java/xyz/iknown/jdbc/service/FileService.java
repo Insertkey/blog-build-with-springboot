@@ -2,6 +2,7 @@ package xyz.iknown.jdbc.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface FileService {
@@ -15,7 +16,9 @@ public interface FileService {
 
     Map<String,Object> getArticleList(int size,int page,String sortKey,String sortValue);
 
-    Map<String, Object> getArticleName(Integer id);
+    Map<String, Object> getArticleInfo(Integer id);
 
     Map<String,Object> getArticleListWithCategory(Integer categoryId);
+
+    Map<String,Object> updateArticle(MultipartFile file,Map<String,Object> stringObjectMap) throws IOException;
 }

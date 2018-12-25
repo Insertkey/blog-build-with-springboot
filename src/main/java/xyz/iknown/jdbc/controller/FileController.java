@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.iknown.jdbc.service.FileService;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -30,13 +31,18 @@ public class FileController {
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> getArticleName(@PathVariable Integer id) {
-        return fileService.getArticleName(id);
+    public Map<String, Object> getArticleInfo(@PathVariable Integer id) {
+        return fileService.getArticleInfo(id);
     }
 
     @DeleteMapping("/{id}")
     public Map<String, Object> deleteArticle(@PathVariable Integer id) {
         return fileService.deleteFile(id);
+    }
+
+    @PutMapping("/update")
+    public Map<String,Object> updateArticle(@RequestParam("file") MultipartFile file, @RequestParam Map<String, Object> stringObjectMap) throws IOException {
+        return fileService.updateArticle(file,stringObjectMap);
     }
 
 }

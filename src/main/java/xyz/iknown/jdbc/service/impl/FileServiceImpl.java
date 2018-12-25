@@ -1,6 +1,8 @@
 package xyz.iknown.jdbc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,8 @@ public class FileServiceImpl implements FileService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    private String path = "C:/static/markdownFile/";
+
     @Override
     public Map<String, Object> handelUploadFile(MultipartFile file, Map<String, Object> stringObjectMap) {
         // 判断文件是否为空
@@ -32,16 +36,16 @@ public class FileServiceImpl implements FileService {
             return ResponseUtil.faildResponse("文件为空");
         }
         try {
-            String path = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/markdownFile/";
-            FileUtil.fileupload(file.getBytes(), path, file.getOriginalFilename());
+            file.transferTo(new java.io.File(path + file.getOriginalFilename()));
+            System.out.println(path);
             try {
                 // 判断文章分类是否存在
                 if (categoryRepository.existsByCategoryName((String) stringObjectMap.get("category"))) {
                     try {
-                        String fullName=file.getOriginalFilename();
-                        String fileName=fullName.substring(0,fullName.lastIndexOf("."));
+                        String fullName = file.getOriginalFilename();
+                        String fileName = fullName.substring(0, fullName.lastIndexOf("."));
                         // 判断文章是否存在
-                        if(!fileRepository.existsByArticleName(fileName)){
+                        if (!fileRepository.existsByArticleName(fileName)) {
                             File file1 = new File();
                             Category category = categoryRepository.findByCategoryName((String) stringObjectMap.get("category"));
                             file1.setCategory(category);
@@ -53,7 +57,7 @@ public class FileServiceImpl implements FileService {
                             file1.setShortIntroduction((String) stringObjectMap.get("shortIntroduction"));
                             fileRepository.save(file1);
                             return ResponseUtil.successResponseWithoutData();
-                        }else {
+                        } else {
                             return ResponseUtil.faildResponse("该文章已存在");
                         }
                     } catch (Exception e) {
@@ -110,66 +114,94 @@ public class FileServiceImpl implements FileService {
 
     /**
      * 只有分页，不带排序
+     *
      * @param page 从零开始
      * @param size
      * @return
      */
     @Override
-    public Map<String, Object> getArticleList(int page,int size) {
-        Pageable pageable= PageRequest.of(page-1,size);
-        Page p=fileRepository.findAll(pageable);
+    public Map<String, Object> getArticleList(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page p = fileRepository.findAll(pageable);
         List<File> fileList = p.getContent();
-        Map<String,Object> map=new HashMap<>();
-        map.put("total",p.getTotalElements());
-        map.put("page",p.getTotalPages());
-        return ResponseUtil.paggingResponse(fileList,map);
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", p.getTotalElements());
+        map.put("page", p.getTotalPages());
+        return ResponseUtil.paggingResponse(fileList, map);
     }
 
     /**
      * 有分页和排序
-     * @param size   每页数量
-     * @param page  页数
-     * @param sortKey 排序字段
+     *
+     * @param size      每页数量
+     * @param page      页数
+     * @param sortKey   排序字段
      * @param sortValue 排序方式
      * @return
      */
     @Override
     public Map<String, Object> getArticleList(int page, int size, String sortKey, String sortValue) {
-        if(sortKey.equals("undefined")||sortKey.equals("null")){
-            return getArticleList(page,size);
-        }else {
-            if(sortValue.equals("descend")){
-                Sort sort=new Sort(Sort.Direction.DESC,sortKey);
-                Page p=fileRepository.findAll(PageRequest.of(page-1,size,sort));
+        if (sortKey.equals("undefined") || sortKey.equals("null")) {
+            return getArticleList(page, size);
+        } else {
+            if (sortValue.equals("descend")) {
+                Sort sort = new Sort(Sort.Direction.DESC, sortKey);
+                Page p = fileRepository.findAll(PageRequest.of(page - 1, size, sort));
                 List<File> fileList = p.getContent();
-                Map<String,Object> map=new HashMap<>();
-                map.put("total",p.getTotalElements());
-                map.put("page",p.getTotalPages());
-                return ResponseUtil.paggingResponse(fileList,map);
-            }else {
-                Sort sort=new Sort(Sort.Direction.ASC,sortKey);
-                Page p=fileRepository.findAll(PageRequest.of(page-1,size,sort));
+                Map<String, Object> map = new HashMap<>();
+                map.put("total", p.getTotalElements());
+                map.put("page", p.getTotalPages());
+                return ResponseUtil.paggingResponse(fileList, map);
+            } else {
+                Sort sort = new Sort(Sort.Direction.ASC, sortKey);
+                Page p = fileRepository.findAll(PageRequest.of(page - 1, size, sort));
                 List<File> fileList = p.getContent();
-                Map<String,Object> map=new HashMap<>();
-                map.put("total",p.getTotalElements());
-                map.put("page",p.getTotalPages());
-                return ResponseUtil.paggingResponse(fileList,map);
+                Map<String, Object> map = new HashMap<>();
+                map.put("total", p.getTotalElements());
+                map.put("page", p.getTotalPages());
+                return ResponseUtil.paggingResponse(fileList, map);
             }
         }
     }
 
     @Override
-    public Map<String, Object> getArticleName(Integer id) {
-        File file=fileRepository.getOne(id);
-        Map<String,Object> map=new HashMap<>();
-        map.put("articleName",file.getArticleName());
+    public Map<String, Object> getArticleInfo(Integer id) {
+        File file = fileRepository.getOne(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", file.getId());
+        map.put("category", file.getCategory().getCategoryName());
+        map.put("shortIntroduction", file.getShortIntroduction());
         return ResponseUtil.successResponseWithJson(map);
     }
 
     @Override
     public Map<String, Object> getArticleListWithCategory(Integer categoryId) {
-        List<File> fileList=fileRepository.findByCategory_Id(categoryId);
+        List<File> fileList = fileRepository.findByCategory_Id(categoryId);
         return ResponseUtil.successResponse(fileList);
+    }
+
+    @Override
+    public Map<String, Object> updateArticle(MultipartFile updateFile, Map<String, Object> stringObjectMap) {
+        if (updateFile.isEmpty()) {
+            return ResponseUtil.faildResponse("文件为空");
+        } else {
+            try {
+                updateFile.transferTo(new java.io.File(path + updateFile.getOriginalFilename()));
+                Integer id = Integer.parseInt((String) stringObjectMap.get("id"));
+                File file = fileRepository.getOne(id);
+                Category category = categoryRepository.findByCategoryName((String) stringObjectMap.get("categoryName"));
+                file.setCategory(category);
+                Date date = new Date();
+                file.setLastEditTime(date.getTime());
+                file.setShortIntroduction((String) stringObjectMap.get("shortIntroduction"));
+                fileRepository.save(file);
+                return ResponseUtil.successResponseWithoutData();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseUtil.faildResponse("更新文章失败，请稍后再试");
+            }
+        }
+
     }
 
     private void deleteFileFormDisk(Integer id) {
